@@ -15,9 +15,11 @@ export class StoreService {
 
     createStore(initialState: AppState) {
         this.store = createStore(reducer, initialState);
+
     }
 
     getStore(): Store {
-      return this.store;
+        return this.store;
     }
+
 }

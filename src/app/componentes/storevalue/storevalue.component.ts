@@ -1,23 +1,29 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { StoreService } from '../../servicios/store.service';
 
 @Component({
-  selector: 'app-storevalue',
-  templateUrl: './storevalue.component.html',
-  styleUrls: ['./storevalue.component.css']
+    selector: 'app-storevalue',
+    templateUrl: './storevalue.component.html',
+    styleUrls: ['./storevalue.component.css']
 })
-export class StorevalueComponent implements OnInit {
+export class StorevalueComponent implements OnInit, OnDestroy {
 
-  public contador: number = 0;
-  constructor(private redux: StoreService) {
+    public contador: number = 0;
 
-    this.redux.getStore().subscribe( () => {
-      this.contador = this.redux.getStore().getState().contador;
-    });
+    private unsubscribe: any;
 
-   }
+    constructor(private redux: StoreService) {
 
-  ngOnInit(): void {
-  }
+    }
+
+    ngOnInit(): void {
+        this.unsubscribe = this.redux.getStore().subscribe(() => {
+            this.contador = this.redux.getStore().getState().contador;
+        });
+    }
+
+    ngOnDestroy(): void {
+        this.unsubscribe();
+    }
 
 }
